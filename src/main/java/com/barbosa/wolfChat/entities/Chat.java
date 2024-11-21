@@ -1,11 +1,10 @@
 package com.barbosa.wolfChat.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,7 +23,8 @@ public class Chat implements Serializable {
     private Long chatId;
     @Column(name = "chat_nome")
     private String chatName;
-
+    @Column( name = "chat_descricao")
+    private String description;
     @Column(name = "chat_criado_em", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -39,4 +39,8 @@ public class Chat implements Serializable {
             joinColumns = @JoinColumn(name = "chat_id"),
             inverseJoinColumns = @JoinColumn(name = "usu_id"))
     private Set<User> users = new HashSet<>();
+
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Message> messages = new ArrayList<>();
 }

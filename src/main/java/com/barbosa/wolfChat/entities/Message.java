@@ -1,5 +1,6 @@
 package com.barbosa.wolfChat.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,10 +15,8 @@ import java.util.Set;
 @Table(name = "tb_mensagem")
 public class Message implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "msg_id")
     private Long msgId;
 
@@ -33,7 +32,8 @@ public class Message implements Serializable {
     private LocalDateTime timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "msg_id_chat")
+    @JoinColumn(name = "msg_chat_id")
+    @JsonBackReference
     private Chat chat;
 
     @ManyToMany
