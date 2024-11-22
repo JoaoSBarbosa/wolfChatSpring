@@ -1,4 +1,4 @@
-package com.barbosa.wolfChat.dto;
+package com.barbosa.wolfChat.dto.user;
 import com.barbosa.wolfChat.entities.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +8,7 @@ import lombok.Data;
 
 
 @Data
-public class UserDTO {
+public class UserCrudDTO {
 
     @NotBlank
     @Size(min = 2, max = 50, message = "O nome deve ter entre 2 e 50 caracteres.")
@@ -26,9 +26,9 @@ public class UserDTO {
             message = "A URL da imagem deve ser válida e terminar com uma extensão de imagem (jpg, gif, png).")
     private String imageUri;
 
-    public UserDTO(){}
+    public UserCrudDTO(){}
 
-    public UserDTO(String firstName, String lastName, String userName, String email, String imageUri) {
+    public UserCrudDTO(String firstName, String lastName, String userName, String email, String imageUri) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -36,7 +36,7 @@ public class UserDTO {
         this.imageUri = imageUri;
     }
 
-    public UserDTO(User user) {
+    public UserCrudDTO(User user) {
         firstName = user.getFirstName();
         lastName = user.getLastName();
         userName = user.getUserName();

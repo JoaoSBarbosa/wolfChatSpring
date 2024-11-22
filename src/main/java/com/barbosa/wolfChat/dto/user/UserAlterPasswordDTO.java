@@ -1,12 +1,9 @@
-package com.barbosa.wolfChat.dto;
+package com.barbosa.wolfChat.dto.user;
 
 import com.barbosa.wolfChat.utils.validations.PasswordsMatch;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 @PasswordsMatch(message = "A senha e a confirmação da senha devem ser iguais.")

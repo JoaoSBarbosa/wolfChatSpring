@@ -1,6 +1,7 @@
 package com.barbosa.wolfChat.services;
 
-import com.barbosa.wolfChat.dto.UserDTO;
+import com.barbosa.wolfChat.dto.user.UserCrudDTO;
+import com.barbosa.wolfChat.dto.user.UserInsertCrudDTO;
 import com.barbosa.wolfChat.entities.User;
 import com.barbosa.wolfChat.repositories.UserRepository;
 import com.barbosa.wolfChat.utils.CommonUtil.CommunUtils;
@@ -24,11 +25,14 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseUtil insertUser(User user) {
-        User savedUser = userRepository.save(user);
+    public ResponseUtil insertUser(UserInsertCrudDTO user) {
+        User entity = new User();
+
+        copyDTOToEntity(user, entity);
+        entity = userRepository.save(entity);
         return ResponseUtil
                 .builder()
-                .data(savedUser)
+                .data(entity)
                 .status(HttpStatus.CREATED)
                 .message("Registro de usuario cadastrado com sucesso!")
                 .sendDateTime(CommunUtils.getDateTime())
@@ -54,10 +58,14 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseUtil updateUser(Long id, UserDTO dto) {
+    public ResponseUtil updateUser(Long id, UserCrudDTO dto) {
 
 
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Não existe registro de colaborador com o id informado: " + id));
+
+        User entity = new User();
+
+        copyDTOToEntity(dto, entity);
 
         if (dto.getUserName() != null) user.setUserName(dto.getUserName());
         if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());
@@ -85,6 +93,18 @@ public class UserService {
             userRepository.deleteById(id);
         } catch (Exception e) {
             throw new EntityNotFoundException(e.getMessage());
+        }
+    }
+
+    private void copyDTOToEntity(UserCrudDTO dto, User user) {
+        if (dto.getUserName() != null) user.setUserName(dto.getUserName());
+        if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());
+        if (dto.getLastName() != null) user.setLastName(dto.getLastName());
+        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
+        if (dto.getImageUri() != null) user.setImageUri(dto.getImageUri());
+
+        if( dto instanceof UserInsertCrudDTO insertCrudDTO) {
+            if(insertCrudDTO.getPassword() != null) user.setPassword(insertCrudDTO.getPassword()); {}
         }
     }
 }
