@@ -1,5 +1,6 @@
 package com.barbosa.wolfChat.controllers;
 
+import com.barbosa.wolfChat.dto.UserDTO;
 import com.barbosa.wolfChat.entities.User;
 import com.barbosa.wolfChat.services.UserService;
 import com.barbosa.wolfChat.utils.model.ResponseUtil;
@@ -33,6 +34,20 @@ public class UserController {
     public ResponseEntity<ResponseUtil> addUser(@RequestBody User user) {
         ResponseUtil responseUtil = userService.insertUser(user);
         return new ResponseEntity<>(responseUtil, responseUtil.getStatus());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseUtil> udpateUser(
+            @PathVariable Long id,
+            @RequestBody UserDTO user) {
+        ResponseUtil responseUtil = userService.updateUser(id,user);
+        return new ResponseEntity<>(responseUtil, responseUtil.getStatus());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
 
