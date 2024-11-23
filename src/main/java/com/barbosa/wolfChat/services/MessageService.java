@@ -25,8 +25,8 @@ public class MessageService {
     @Transactional
     public String sendMessage(Message message) {
         Message entity = new Message();
-        entity.setChat(message.getChat());
-        entity.setSender(message.getSender());
+        entity.setChatId( message.getChatId() );
+        entity.setUserId(message.getUserId());
         entity.setContent(message.getContent());
         messageRepository.save(entity);
         return "A mensagem [" + message.getContent() + "] foi enviada com sucesso!";

@@ -1,4 +1,5 @@
 package com.barbosa.wolfChat.controllers;
+import com.barbosa.wolfChat.dto.chat.ChatDTO;
 import com.barbosa.wolfChat.dto.chat.CreateChatDTO;
 import com.barbosa.wolfChat.entities.Chat;
 import com.barbosa.wolfChat.services.ChatService;
@@ -28,8 +29,8 @@ public class ChatController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Chat>> getChats(Pageable pageable) {
-        Page<Chat> chats = chatService.getChats(pageable);
+    public ResponseEntity<Page<ChatDTO>> getChats(Pageable pageable) {
+        Page<ChatDTO> chats = chatService.getChats(pageable);
         return ResponseEntity.ok().body(chats);
     }
 }

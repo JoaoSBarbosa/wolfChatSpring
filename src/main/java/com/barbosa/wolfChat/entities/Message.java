@@ -23,20 +23,26 @@ public class Message implements Serializable {
     @Column(name = "msg_conteudo")
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "msg_remetente_id")
-    private User sender;
+    @Column(name = "msg_chat_id", nullable = false)
+    private Long chatId;
+
+    @Column(name = "msg_remetente_id", nullable = false)
+    private Long userId;
 
     @Column(name = "msg_enviado_em", updatable = false)
     @CreationTimestamp
     private LocalDateTime timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "msg_chat_id")
+    @JoinColumn(name = "msg_remetente_id", insertable = false, updatable = false, referencedColumnName = "usu_id")
+    private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "msg_chat_id", insertable = false, updatable = false, referencedColumnName = "chat_id")
     @JsonBackReference
     private Chat chat;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tb_mensagem_visualizacao",
             joinColumns = @JoinColumn(name = "mv_mensagem_id"),

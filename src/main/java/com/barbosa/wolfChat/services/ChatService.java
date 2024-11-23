@@ -1,10 +1,12 @@
 package com.barbosa.wolfChat.services;
 
+import com.barbosa.wolfChat.dto.chat.ChatDTO;
 import com.barbosa.wolfChat.dto.chat.CreateChatDTO;
 import com.barbosa.wolfChat.dto.chat.CreateChatRequestDTO;
 import com.barbosa.wolfChat.entities.Chat;
 import com.barbosa.wolfChat.entities.ChatUser;
 import com.barbosa.wolfChat.entities.User;
+import com.barbosa.wolfChat.mapper.ChatMapper;
 import com.barbosa.wolfChat.repositories.ChatRepository;
 import com.barbosa.wolfChat.repositories.ChatUserRepository;
 import com.barbosa.wolfChat.repositories.UserRepository;
@@ -18,14 +20,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
+import java.util.HashSet;;
 import java.util.Set;
 
 @Service
 public class ChatService {
 
+    @Autowired ChatMapper chatMapper;
     @Autowired
     ChatUserRepository chatUserRepository;
     private final ChatRepository chatRepository;
@@ -74,47 +75,10 @@ public class ChatService {
     }
 
 
-//    @Transactional
-//    public ResponseUtil creatingChat(CreateChatDTO dto) {
-//        System.out.println("DADOS CHEGOU: "+dto);
-//        Chat chat = new Chat();
-//        if (dto.getChatName() != null) chat.setChatName(dto.getChatName());
-//        if (dto.getDescription() != null) chat.setDescription(dto.getDescription());
-//
-//        // Adicionando usuários ao chat
-//        Set<User> users = new HashSet<>();
-//        List<Long> userIds = dto.getUserIds();
-//
-//        for (Long userId : userIds) {
-//            User user = userRepository.findById(userId)
-//                    .orElseThrow(() -> new ServiceNotFoudEntityException("Usuário não encontrado: " + userId));
-//            users.add(user);
-//        }
-//        chat.setUsers(users);
-//        // Salvando chat
-//        chat = chatRepository.save(chat);
-//
-//        System.out.println("CHAT CRIADO: "+chat);
-//        // Adicionando usuários no ChatUser
-//        for (User user : users) {
-//            ChatUser chatUser = new ChatUser();
-//            chatUser.setChat(chat);
-//            chatUser.setUser(user);
-//            chatUser.setIsAdmin( user.getUserId().equals( dto.getAdminId()));
-//            chatUserRepository.save(chatUser);
-//        }
-//        return ResponseUtil
-//                .builder()
-//                .message("Grupo criado com sucesso!")
-//                .status(HttpStatus.CREATED)
-//                .data(CommunUtils.getDateTime())
-//                .data(chat)
-//                .build();
-//
-//    }
-
     @Transactional(readOnly = true)
-    public Page<Chat> getChats(Pageable pageable) {
-        return chatRepository.findAll(pageable);
+    public Page<ChatDTO> getChats(Pageable pageable) {
+        Page<Chat> chatPage = chatRepository.findAll(pageable);
+
+        return chatPage.map(chatMapper::toDTO);
     }
 }

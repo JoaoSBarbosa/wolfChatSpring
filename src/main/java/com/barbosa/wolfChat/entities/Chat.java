@@ -33,10 +33,8 @@ public class Chat implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ChatUser> chatUsers = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tb_chat_usuario",
             joinColumns = @JoinColumn(name = "ctu_chat_id"),
