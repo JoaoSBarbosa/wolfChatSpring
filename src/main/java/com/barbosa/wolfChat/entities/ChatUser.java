@@ -1,6 +1,4 @@
 package com.barbosa.wolfChat.entities;
-
-import com.barbosa.wolfChat.entities.PK.ChatUserId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,23 +19,32 @@ public class ChatUser implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private ChatUserId chatUserId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ctu_id")
+    private Long id;
 
-    @ManyToOne
-    @MapsId("chatId")
-    @JoinColumn(name = "chat_id")
-    private Chat chat;
+    @Column(name = "ctu_chat_id", nullable = false)
+    private Long chatId;
 
-    @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name = "usu_id")
-    private User user;
+    @Column(name = "ctu_usu_id",nullable = false)
+    private Long userId;
 
-    @Column(name = "is_admin")
+    @Column(name = "ctu_is_admin", nullable = false)
     private Boolean isAdmin = false;
 
     @CreationTimestamp
+    @Column(name = "ctu_data_entrada")
     private LocalDateTime joinedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "ctu_chat_id", referencedColumnName = "chat_id", insertable = false, updatable = false)
+    private Chat chat;
+
+    @ManyToOne
+    @JoinColumn(name = "ctu_usu_id", referencedColumnName = "usu_id", insertable = false, updatable = false)
+    private User user;
+
+
 
 }

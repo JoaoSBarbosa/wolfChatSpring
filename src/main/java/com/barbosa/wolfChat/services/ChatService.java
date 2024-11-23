@@ -35,35 +35,35 @@ public class ChatService {
         this.chatRepository = chatRepository;
         this.userRepository = userRepository;
     }
-
     @Transactional
     public ResponseUtil creatingChat(CreateChatDTO dto) {
-
+        // Criação do chat
         Chat chat = new Chat();
         if (dto.getChatName() != null) chat.setChatName(dto.getChatName());
         if (dto.getDescription() != null) chat.setDescription(dto.getDescription());
 
-        // Adicionando usuários ao chat
-        Set<User> users = new HashSet<>();
-        List<Long> userIds = dto.getUserIds();
+        // Salvando o chat primeiro
+        chat = chatRepository.saveAndFlush(chat);
 
-        for (Long userId : userIds) {
+//        // Adicionando usuários ao chat
+        Set<User> users = new HashSet<>();
+        for (Long userId : dto.getUserIds()) {
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new ServiceNotFoudEntityException("Usuário não encontrado: " + userId));
             users.add(user);
         }
-        chat.setUsers(users);
-        // Salvando chat
-        chat = chatRepository.save(chat);
 
-        // Adicionando usuários no ChatUser
+        chat.setUsers(users);
+
+        // Salvando usuários no ChatUser
         for (User user : users) {
             ChatUser chatUser = new ChatUser();
-            chatUser.setChat(chat);
-            chatUser.setUser(user);
-            chatUser.setIsAdmin( user.getUserId().equals( dto.getAdminId()));
+            chatUser.setChatId(chat.getChatId()); // Aqui o chat já tem um ID válido
+            chatUser.setUserId(user.getUserId());
+            chatUser.setIsAdmin(user.getUserId().equals(dto.getAdminId()));
             chatUserRepository.save(chatUser);
         }
+
         return ResponseUtil
                 .builder()
                 .message("Grupo criado com sucesso!")
@@ -71,8 +71,47 @@ public class ChatService {
                 .data(CommunUtils.getDateTime())
                 .data(chat)
                 .build();
-
     }
+
+
+//    @Transactional
+//    public ResponseUtil creatingChat(CreateChatDTO dto) {
+//        System.out.println("DADOS CHEGOU: "+dto);
+//        Chat chat = new Chat();
+//        if (dto.getChatName() != null) chat.setChatName(dto.getChatName());
+//        if (dto.getDescription() != null) chat.setDescription(dto.getDescription());
+//
+//        // Adicionando usuários ao chat
+//        Set<User> users = new HashSet<>();
+//        List<Long> userIds = dto.getUserIds();
+//
+//        for (Long userId : userIds) {
+//            User user = userRepository.findById(userId)
+//                    .orElseThrow(() -> new ServiceNotFoudEntityException("Usuário não encontrado: " + userId));
+//            users.add(user);
+//        }
+//        chat.setUsers(users);
+//        // Salvando chat
+//        chat = chatRepository.save(chat);
+//
+//        System.out.println("CHAT CRIADO: "+chat);
+//        // Adicionando usuários no ChatUser
+//        for (User user : users) {
+//            ChatUser chatUser = new ChatUser();
+//            chatUser.setChat(chat);
+//            chatUser.setUser(user);
+//            chatUser.setIsAdmin( user.getUserId().equals( dto.getAdminId()));
+//            chatUserRepository.save(chatUser);
+//        }
+//        return ResponseUtil
+//                .builder()
+//                .message("Grupo criado com sucesso!")
+//                .status(HttpStatus.CREATED)
+//                .data(CommunUtils.getDateTime())
+//                .data(chat)
+//                .build();
+//
+//    }
 
     @Transactional(readOnly = true)
     public Page<Chat> getChats(Pageable pageable) {

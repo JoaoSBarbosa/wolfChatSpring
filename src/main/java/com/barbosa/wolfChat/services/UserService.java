@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,8 @@ public class UserService {
 
     @Autowired
     ChatUserRepository chatUserRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
 
@@ -113,7 +116,9 @@ public class UserService {
         if (dto.getImageUri() != null) user.setImageUri(dto.getImageUri());
 
         if( dto instanceof UserInsertCrudDTO insertCrudDTO) {
-            if(insertCrudDTO.getPassword() != null) user.setPassword(insertCrudDTO.getPassword()); {}
+            if(insertCrudDTO.getPassword() != null) {
+                user.setPassword(passwordEncoder.encode(insertCrudDTO.getPassword()));
+            }
         }
     }
 }
