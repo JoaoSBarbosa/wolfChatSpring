@@ -2,12 +2,18 @@ package com.barbosa.wolfChat.entities;
 
 import com.barbosa.wolfChat.entities.PK.ChatUserId;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_chat_usuario")
 public class ChatUser implements Serializable {
@@ -31,13 +37,7 @@ public class ChatUser implements Serializable {
     @Column(name = "is_admin")
     private Boolean isAdmin = false;
 
+    @CreationTimestamp
+    private LocalDateTime joinedAt;
 
-    public ChatUser() {}
-
-    public ChatUser(ChatUserId chatUserId, Chat chat, User user, Boolean isAdmin) {
-        this.chatUserId = chatUserId;
-        this.chat = chat;
-        this.user = user;
-        this.isAdmin = isAdmin;
-    }
 }

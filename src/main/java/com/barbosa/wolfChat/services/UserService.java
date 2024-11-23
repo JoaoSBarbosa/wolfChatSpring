@@ -2,11 +2,14 @@ package com.barbosa.wolfChat.services;
 
 import com.barbosa.wolfChat.dto.user.UserCrudDTO;
 import com.barbosa.wolfChat.dto.user.UserInsertCrudDTO;
+import com.barbosa.wolfChat.entities.ChatUser;
 import com.barbosa.wolfChat.entities.User;
+import com.barbosa.wolfChat.repositories.ChatUserRepository;
 import com.barbosa.wolfChat.repositories.UserRepository;
 import com.barbosa.wolfChat.utils.CommonUtil.CommunUtils;
 import com.barbosa.wolfChat.utils.model.ResponseUtil;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,9 +17,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserService {
+
+    @Autowired
+    ChatUserRepository chatUserRepository;
 
     private final UserRepository userRepository;
 
@@ -95,6 +102,8 @@ public class UserService {
             throw new EntityNotFoundException(e.getMessage());
         }
     }
+
+
 
     private void copyDTOToEntity(UserCrudDTO dto, User user) {
         if (dto.getUserName() != null) user.setUserName(dto.getUserName());

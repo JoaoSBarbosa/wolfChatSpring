@@ -25,19 +25,12 @@ public class MessageService {
     @Transactional
     public String sendMessage(Message message) {
         Message entity = new Message();
-
         entity.setChat(message.getChat());
         entity.setSender(message.getSender());
         entity.setContent(message.getContent());
         messageRepository.save(entity);
         return "A mensagem [" + message.getContent() + "] foi enviada com sucesso!";
 
-//        if(message.getSender() != null){
-//            User user = userRepository.findById(message.getSender().getUserId()).orElseThrow(()-> new ServiceNotFoudEntityException("Nenhum usuario localizado com o id informado"));
-//        }
-//        if(message.getChat() != null){
-//            Chat chat = message.getChat();
-//        }
     }
 
     @Transactional(readOnly = true)
