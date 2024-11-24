@@ -1,5 +1,6 @@
 package com.barbosa.wolfChat.dto.chat;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -10,4 +11,6 @@ public class CreateChatDTO {
     private String description;
     private List<Long> userIds;
     private Long adminId;
+    @NotNull(message = "O campo 'isGroup' é obrigatório.")
+    private Boolean isGroup;
 }

@@ -115,6 +115,7 @@ public class UserService {
         if (dto.getEmail() != null) user.setEmail(dto.getEmail());
         if (dto.getImageUri() != null) user.setImageUri(dto.getImageUri());
 
+        user.setCreateIn( LocalDateTime.now());
         if( dto instanceof UserInsertCrudDTO insertCrudDTO) {
             if(insertCrudDTO.getPassword() != null) {
                 user.setPassword(passwordEncoder.encode(insertCrudDTO.getPassword()));

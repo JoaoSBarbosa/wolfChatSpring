@@ -4,6 +4,7 @@ import com.barbosa.wolfChat.dto.chat.CreateChatDTO;
 import com.barbosa.wolfChat.entities.Chat;
 import com.barbosa.wolfChat.services.ChatService;
 import com.barbosa.wolfChat.utils.model.ResponseUtil;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,7 +24,7 @@ public class ChatController {
 
 
     @PostMapping
-    public ResponseEntity<ResponseUtil> addChat(@RequestBody CreateChatDTO userId) {
+    public ResponseEntity<ResponseUtil> addChat(@Valid @RequestBody CreateChatDTO userId) {
         ResponseUtil responseUtil = chatService.creatingChat(userId);
         return new ResponseEntity<>(responseUtil, responseUtil.getStatus());
     }

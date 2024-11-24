@@ -12,12 +12,11 @@ import java.util.Set;
 
 @Data
 public class ChatDTO {
-
     private Long chatId;
+    private Boolean isGroup;
     private String chatName;
     private String description;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Set<UserMessageDTO> users = new HashSet<>();
-    private List<MessageDTO> messages = new ArrayList<>();
+    private Long createdBy;
+    private List<ChatUserDTO> chatUsers;
 }

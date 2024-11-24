@@ -21,6 +21,10 @@ public class Chat implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chat_id")
     private Long chatId;
+
+    @Column(name = "chat_grupo")
+    private Boolean isGroup;
+
     @Column(name = "chat_nome")
     private String chatName;
     @Column( name = "chat_descricao")
@@ -29,17 +33,24 @@ public class Chat implements Serializable {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column(name = "chat_criado_por", nullable = false)
+    private Long createdBy;
+
     @Column(name = "chat_atualizado_em")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "chat_criado_por", insertable = false, updatable = false, referencedColumnName = "usu_id")
+    private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "tb_chat_usuario",
-            joinColumns = @JoinColumn(name = "ctu_chat_id"),
-            inverseJoinColumns = @JoinColumn(name = "ctu_usu_id"))
-    private Set<User> users = new HashSet<>();
+//    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    private Set<ChatUser> chatUsers = new HashSet<>();
+
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference // Evita loops de serialização
+    private List<ChatUser> chatUsers = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference

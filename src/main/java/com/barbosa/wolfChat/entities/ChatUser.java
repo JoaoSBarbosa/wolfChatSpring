@@ -1,4 +1,5 @@
 package com.barbosa.wolfChat.entities;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,11 +35,13 @@ public class ChatUser implements Serializable {
     private Boolean isAdmin = false;
 
     @CreationTimestamp
-    @Column(name = "ctu_data_entrada")
+    @Column(name = "ctu_data_entrada", updatable = false)
     private LocalDateTime joinedAt;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ctu_chat_id", referencedColumnName = "chat_id", insertable = false, updatable = false)
+    @JsonBackReference // Evita loops de serialização
     private Chat chat;
 
     @ManyToOne

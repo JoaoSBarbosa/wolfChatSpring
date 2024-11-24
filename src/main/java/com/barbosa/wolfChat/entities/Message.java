@@ -2,7 +2,9 @@ package com.barbosa.wolfChat.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
@@ -12,6 +14,8 @@ import java.util.Set;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_mensagem")
 public class Message implements Serializable {
 
@@ -42,24 +46,16 @@ public class Message implements Serializable {
     @JsonBackReference
     private Chat chat;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "tb_mensagem_visualizacao",
-            joinColumns = @JoinColumn(name = "mv_mensagem_id"),
-            inverseJoinColumns = @JoinColumn(name = "mv_usuario_id")
-    )
-    private Set<User> viewedBy = new HashSet<>();
 
-    public Message() {
-    }
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MessageView> viewedBy = new HashSet<>();
 
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "tb_mensagem_visualizacao",
+//            joinColumns = @JoinColumn(name = "mv_mensagem_id"),
+//            inverseJoinColumns = @JoinColumn(name = "mv_usuario_id")
+//    )
+//    private Set<User> viewedBy = new HashSet<>();
 
-    public Message(Long msgId, String content, User sender, LocalDateTime timestamp, Chat chat, Set<User> viewedBy) {
-        this.msgId = msgId;
-        this.content = content;
-        this.sender = sender;
-        this.timestamp = timestamp;
-        this.chat = chat;
-        this.viewedBy = viewedBy;
-    }
 }
