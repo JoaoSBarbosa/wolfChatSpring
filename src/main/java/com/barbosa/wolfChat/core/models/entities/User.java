@@ -1,5 +1,6 @@
-package com.barbosa.wolfChat.models.entities;
+package com.barbosa.wolfChat.core.models.entities;
 
+import com.barbosa.wolfChat.core.models.base.Auditable;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
@@ -19,9 +20,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_usuario")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class User implements Serializable {
+public class User  extends Auditable implements Serializable{
 
     @Id
     @EqualsAndHashCode.Include

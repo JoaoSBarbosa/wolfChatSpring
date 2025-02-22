@@ -1,6 +1,6 @@
 package com.barbosa.wolfChat.repositories;
 
-import com.barbosa.wolfChat.models.entities.ChatUser;
+import com.barbosa.wolfChat.core.models.entities.ChatUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

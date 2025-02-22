@@ -1,6 +1,6 @@
 package com.barbosa.wolfChat.services;
 
-import com.barbosa.wolfChat.models.entities.ChatUser;
+import com.barbosa.wolfChat.core.models.entities.ChatUser;
 import com.barbosa.wolfChat.repositories.ChatUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

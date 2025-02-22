@@ -1,6 +1,6 @@
 package com.barbosa.wolfChat.controllers;
 
-import com.barbosa.wolfChat.models.entities.Message;
+import com.barbosa.wolfChat.core.models.entities.Message;
 import com.barbosa.wolfChat.repositories.MessageRepository;
 import com.barbosa.wolfChat.services.MessageService;
 import org.springframework.data.domain.Page;

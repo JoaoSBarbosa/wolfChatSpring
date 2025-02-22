@@ -2,7 +2,7 @@ package com.barbosa.wolfChat.api.user.services;
 
 import com.barbosa.wolfChat.api.user.dtos.UserCrudDTO;
 import com.barbosa.wolfChat.api.user.dtos.UserInsertCrudDTO;
-import com.barbosa.wolfChat.models.entities.User;
+import com.barbosa.wolfChat.core.models.entities.User;
 import com.barbosa.wolfChat.repositories.ChatUserRepository;
 import com.barbosa.wolfChat.repositories.UserRepository;
 import com.barbosa.wolfChat.utils.CommonUtil.CommunUtils;

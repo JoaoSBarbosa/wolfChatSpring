@@ -1,4 +1,4 @@
-package com.barbosa.wolfChat.models.entities;
+package com.barbosa.wolfChat.core.models.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;

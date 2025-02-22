@@ -1,6 +1,6 @@
 package com.barbosa.wolfChat.repositories;
 
-import com.barbosa.wolfChat.models.entities.User;
+import com.barbosa.wolfChat.core.models.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

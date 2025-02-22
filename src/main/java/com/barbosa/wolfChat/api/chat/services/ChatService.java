@@ -1,9 +1,9 @@
 package com.barbosa.wolfChat.api.chat.services;
 
 import com.barbosa.wolfChat.api.chat.dtos.ChatDTO;
+import com.barbosa.wolfChat.core.models.entities.*;
 import com.barbosa.wolfChat.dto.chat.ChatUserDTO;
 import com.barbosa.wolfChat.dto.chat.CreateChatDTO;
-import com.barbosa.wolfChat.models.entities.*;
 import com.barbosa.wolfChat.repositories.ChatRepository;
 import com.barbosa.wolfChat.repositories.ChatUserRepository;
 import com.barbosa.wolfChat.repositories.MessageRepository;
