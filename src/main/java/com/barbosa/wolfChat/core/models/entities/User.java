@@ -30,24 +30,22 @@ public class User  extends Auditable implements Serializable{
     @Column(name = "usu_id")
     private Long userId;
 
-    @Column(name = "usu_nome")
+    @Column(name = "nome")
     private String firstName;
-    @Column(name = "usu_sobrenome")
+    @Column(name = "sobrenome")
     private String lastName;
-    @Column(name = "usu_usuario", unique = true)
+    @Column(name = "usuario", unique = true)
     private String userName;
-    @Column(name = "usu_email")
+    @Column(name = "email")
     private String email;
-    @Column(name = "usu_senha")
+    @Column(name = "senha")
     private String password;
-    @Column(name = "usu_url_imagem")
+    @Column(name = "url_imagem")
     private String imageUri;
-    @Column(name = "usu_criado_em")
-    @CreationTimestamp
-    private LocalDateTime createIn;
-    @Column(name = "usu_atualizado_em")
-    @UpdateTimestamp
-    private LocalDateTime updateIn;
+
+    @Column(name = "link_imagem_dropbox")
+    private String linkDropboxImage;
+
 
 
 }
