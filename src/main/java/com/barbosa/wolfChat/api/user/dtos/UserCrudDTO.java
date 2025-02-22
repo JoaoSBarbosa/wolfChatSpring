@@ -1,5 +1,5 @@
-package com.barbosa.wolfChat.dto.user;
-import com.barbosa.wolfChat.entities.User;
+package com.barbosa.wolfChat.api.user.dtos;
+import com.barbosa.wolfChat.models.entities.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

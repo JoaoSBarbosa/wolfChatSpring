@@ -1,6 +1,5 @@
-package com.barbosa.wolfChat.dto.user;
+package com.barbosa.wolfChat.api.user.dtos;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

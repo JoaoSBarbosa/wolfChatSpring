@@ -1,7 +1,12 @@
-package com.barbosa.wolfChat.entities;
+package com.barbosa.wolfChat.models.entities;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -11,10 +16,15 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tb_usuario")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class User implements Serializable {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usu_id")
     private Long userId;
@@ -37,21 +47,6 @@ public class User implements Serializable {
     @Column(name = "usu_atualizado_em")
     @UpdateTimestamp
     private LocalDateTime updateIn;
-
-    public User(){}
-
-    public User(Long userId, String firstName, String lastName, String userName, String email, String password, String imageUri, LocalDateTime createIn, LocalDateTime updateIn) {
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.imageUri = imageUri;
-        this.createIn = createIn;
-        this.updateIn = updateIn;
-    }
-
 
 
 }

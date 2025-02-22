@@ -1,6 +1,6 @@
 package com.barbosa.wolfChat.services;
 
-import com.barbosa.wolfChat.entities.Message;
+import com.barbosa.wolfChat.models.entities.Message;
 import com.barbosa.wolfChat.repositories.ChatRepository;
 import com.barbosa.wolfChat.repositories.MessageRepository;
 import com.barbosa.wolfChat.repositories.UserRepository;

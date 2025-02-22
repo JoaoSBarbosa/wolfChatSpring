@@ -1,6 +1,6 @@
 package com.barbosa.wolfChat.utils.validations;
 
-import com.barbosa.wolfChat.dto.user.UserAlterPasswordDTO;
+import com.barbosa.wolfChat.api.user.dtos.UserAlterPasswordDTO;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

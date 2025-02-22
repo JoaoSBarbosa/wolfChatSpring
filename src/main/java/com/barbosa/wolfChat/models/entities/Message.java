@@ -1,4 +1,4 @@
-package com.barbosa.wolfChat.entities;
+package com.barbosa.wolfChat.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

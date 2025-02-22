@@ -1,4 +1,4 @@
-package com.barbosa.wolfChat.dto.user;
+package com.barbosa.wolfChat.api.user.dtos;
 
 import com.barbosa.wolfChat.utils.validations.PasswordsMatch;
 import jakarta.validation.constraints.NotBlank;

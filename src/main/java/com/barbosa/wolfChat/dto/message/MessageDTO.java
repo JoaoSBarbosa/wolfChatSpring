@@ -1,13 +1,7 @@
 package com.barbosa.wolfChat.dto.message;
 
-import com.barbosa.wolfChat.dto.user.UserMessageDTO;
-import com.barbosa.wolfChat.entities.Chat;
-import com.barbosa.wolfChat.entities.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import com.barbosa.wolfChat.api.user.dtos.UserMessageDTO;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

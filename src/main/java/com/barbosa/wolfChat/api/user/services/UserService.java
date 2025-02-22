@@ -1,9 +1,8 @@
-package com.barbosa.wolfChat.services;
+package com.barbosa.wolfChat.api.user.services;
 
-import com.barbosa.wolfChat.dto.user.UserCrudDTO;
-import com.barbosa.wolfChat.dto.user.UserInsertCrudDTO;
-import com.barbosa.wolfChat.entities.ChatUser;
-import com.barbosa.wolfChat.entities.User;
+import com.barbosa.wolfChat.api.user.dtos.UserCrudDTO;
+import com.barbosa.wolfChat.api.user.dtos.UserInsertCrudDTO;
+import com.barbosa.wolfChat.models.entities.User;
 import com.barbosa.wolfChat.repositories.ChatUserRepository;
 import com.barbosa.wolfChat.repositories.UserRepository;
 import com.barbosa.wolfChat.utils.CommonUtil.CommunUtils;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class UserService {

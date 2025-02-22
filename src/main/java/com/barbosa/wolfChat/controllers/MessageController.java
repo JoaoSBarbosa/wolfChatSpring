@@ -1,14 +1,12 @@
 package com.barbosa.wolfChat.controllers;
 
-import com.barbosa.wolfChat.entities.Message;
+import com.barbosa.wolfChat.models.entities.Message;
 import com.barbosa.wolfChat.repositories.MessageRepository;
 import com.barbosa.wolfChat.services.MessageService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/message")

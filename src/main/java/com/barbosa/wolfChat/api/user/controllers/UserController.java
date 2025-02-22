@@ -1,9 +1,9 @@
-package com.barbosa.wolfChat.controllers;
+package com.barbosa.wolfChat.api.user.controllers;
 
-import com.barbosa.wolfChat.dto.user.UserCrudDTO;
-import com.barbosa.wolfChat.dto.user.UserInsertCrudDTO;
-import com.barbosa.wolfChat.entities.User;
-import com.barbosa.wolfChat.services.UserService;
+import com.barbosa.wolfChat.api.user.dtos.UserCrudDTO;
+import com.barbosa.wolfChat.api.user.dtos.UserInsertCrudDTO;
+import com.barbosa.wolfChat.models.entities.User;
+import com.barbosa.wolfChat.api.user.services.UserService;
 import com.barbosa.wolfChat.utils.model.ResponseUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

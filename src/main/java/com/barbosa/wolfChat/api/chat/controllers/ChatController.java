@@ -1,8 +1,7 @@
-package com.barbosa.wolfChat.controllers;
-import com.barbosa.wolfChat.dto.chat.ChatDTO;
+package com.barbosa.wolfChat.api.chat.controllers;
+import com.barbosa.wolfChat.api.chat.dtos.ChatDTO;
 import com.barbosa.wolfChat.dto.chat.CreateChatDTO;
-import com.barbosa.wolfChat.entities.Chat;
-import com.barbosa.wolfChat.services.ChatService;
+import com.barbosa.wolfChat.api.chat.services.ChatService;
 import com.barbosa.wolfChat.utils.model.ResponseUtil;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
