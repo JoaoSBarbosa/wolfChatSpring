@@ -1,1 +1,0 @@
-INSERT INTO `tb_usuario` VALUES (1,'2024-11-21 20:28:01.104220','adm@gmail.com','admin','vazio','wolf','123','2024-11-21 20:28:01.104220','wolf');

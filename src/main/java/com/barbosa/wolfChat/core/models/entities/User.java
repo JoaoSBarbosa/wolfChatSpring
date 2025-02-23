@@ -3,6 +3,7 @@ package com.barbosa.wolfChat.core.models.entities;
 import com.barbosa.wolfChat.core.models.base.Auditable;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @Entity
@@ -27,7 +29,7 @@ public class User  extends Auditable implements Serializable{
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "usu_id")
+    @Column(name = "id")
     private Long userId;
 
     @Column(name = "nome")
@@ -46,6 +48,9 @@ public class User  extends Auditable implements Serializable{
     @Column(name = "link_imagem_dropbox")
     private String linkDropboxImage;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_usuario_acessos", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_acesso"))
+    private Set<Roles> roles;
 
 
 }

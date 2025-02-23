@@ -1,0 +1,5 @@
+CREATE TABLE `acessos`
+(
+    id   BIGINT AUTO_INCREMETN PRIMARY KEY,
+    nome VARCHAR(125) NOT NULL
+);

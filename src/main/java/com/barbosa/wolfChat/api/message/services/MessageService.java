@@ -1,4 +1,4 @@
-package com.barbosa.wolfChat.services;
+package com.barbosa.wolfChat.api.message.services;
 
 import com.barbosa.wolfChat.core.models.entities.Message;
 import com.barbosa.wolfChat.repositories.ChatRepository;
