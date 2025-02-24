@@ -22,30 +22,30 @@ public class ChatUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ctu_id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "ctu_chat_id", nullable = false)
+    @Column(name = "chat_id", nullable = false)
     private Long chatId;
 
-    @Column(name = "ctu_usu_id",nullable = false)
+    @Column(name = "usu_id",nullable = false)
     private Long userId;
 
-    @Column(name = "ctu_is_admin", nullable = false)
+    @Column(name = "is_admin", nullable = false)
     private Boolean isAdmin = false;
 
     @CreationTimestamp
-    @Column(name = "ctu_data_entrada", updatable = false)
+    @Column(name = "data_entrada", updatable = false)
     private LocalDateTime joinedAt;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ctu_chat_id", referencedColumnName = "chat_id", insertable = false, updatable = false)
+    @JoinColumn(name = "chat_id", insertable = false, updatable = false)
     @JsonBackReference // Evita loops de serialização
     private Chat chat;
 
     @ManyToOne
-    @JoinColumn(name = "ctu_usu_id", referencedColumnName = "usu_id", insertable = false, updatable = false)
+    @JoinColumn(name = "usu_id", insertable = false, updatable = false)
     private User user;
 
 

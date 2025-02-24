@@ -17,29 +17,29 @@ public class Chat implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chat_id")
+    @Column(name = "id")
     private Long chatId;
 
-    @Column(name = "chat_grupo")
+    @Column(name = "grupo")
     private Boolean isGroup;
 
-    @Column(name = "chat_nome")
+    @Column(name = "nome")
     private String chatName;
-    @Column( name = "chat_descricao")
+    @Column( name = "descricao")
     private String description;
-    @Column(name = "chat_criado_em", updatable = false)
+    @Column(name = "criado_em", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "chat_criado_por", nullable = false)
+    @Column(name = "criado_por", nullable = false)
     private Long createdBy;
 
-    @Column(name = "chat_atualizado_em")
+    @Column(name = "tualizado_em")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "chat_criado_por", insertable = false, updatable = false, referencedColumnName = "usu_id")
+    @JoinColumn(name = "criado_por", insertable = false, updatable = false, referencedColumnName = "id")
     private User user;
 
 //    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

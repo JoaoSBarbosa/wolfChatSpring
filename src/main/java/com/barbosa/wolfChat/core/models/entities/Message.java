@@ -21,28 +21,28 @@ public class Message implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "msg_id")
+    @Column(name = "id")
     private Long msgId;
 
-    @Column(name = "msg_conteudo")
+    @Column(name = "conteudo")
     private String content;
 
-    @Column(name = "msg_chat_id", nullable = false)
+    @Column(name = "chat_id", nullable = false)
     private Long chatId;
 
-    @Column(name = "msg_remetente_id", nullable = false)
+    @Column(name = "remetente_id", nullable = false)
     private Long userId;
 
-    @Column(name = "msg_enviado_em", updatable = false)
+    @Column(name = "enviado_em", updatable = false)
     @CreationTimestamp
     private LocalDateTime timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "msg_remetente_id", insertable = false, updatable = false, referencedColumnName = "usu_id")
+    @JoinColumn(name = "remetente_id", insertable = false, updatable = false, referencedColumnName = "id")
     private User sender;
 
     @ManyToOne
-    @JoinColumn(name = "msg_chat_id", insertable = false, updatable = false, referencedColumnName = "chat_id")
+    @JoinColumn(name = "chat_id", insertable = false, updatable = false, referencedColumnName = "id")
     @JsonBackReference
     private Chat chat;
 

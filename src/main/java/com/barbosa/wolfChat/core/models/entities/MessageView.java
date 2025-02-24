@@ -12,20 +12,20 @@ public class MessageView {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageViewId;
 
-    @Column(name = "mv_id_mensagem")
+    @Column(name = "id_mensagem")
     private Long msgId;
 
-    @Column(name = "mv_id_usuario_vizualizou")
+    @Column(name = "id_usuario_vizualizou")
     private Long userId;
 
     @ManyToOne
-    @JoinColumn(name = "mv_id_mensagem", nullable = false, insertable = false, updatable = false, referencedColumnName = "msg_id")
+    @JoinColumn(name = "id_mensagem", nullable = false, insertable = false, updatable = false, referencedColumnName = "id")
     private Message message;
 
     @ManyToOne
-    @JoinColumn(name = "mv_id_usuario_vizualizou", nullable = false, referencedColumnName = "usu_id", insertable = false, updatable = false)
+    @JoinColumn(name = "id_usuario_vizualizou", nullable = false, referencedColumnName = "id", insertable = false, updatable = false)
     private User viewer;
 
-    @Column(name = "mv_visualiado_em")
+    @Column(name = "visualiado_em")
     private LocalDateTime viewedAt;
 }
