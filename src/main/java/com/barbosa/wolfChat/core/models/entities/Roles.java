@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tb_acessos")
+@Table(name = "acessos")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @JsonNaming( PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Roles {
