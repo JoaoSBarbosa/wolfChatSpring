@@ -1,21 +1,21 @@
-package com.barbosa.wolfChat.services;
+package com.barbosa.wolfChat.api.chatUser.services;
 
 import com.barbosa.wolfChat.core.models.entities.ChatUser;
 import com.barbosa.wolfChat.repositories.ChatUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class ChatUserService {
+@RequiredArgsConstructor
+public class ChatUserServiceImpl implements ChatUserService {
 
-    @Autowired
-    ChatUserRepository chatUserRepository;
+    private final ChatUserRepository chatUserRepository;
 
-    @Transactional
+    @Override
     public void removeUserFromChat(Long userId, Long chatId) {
+
         ChatUser chatUser = chatUserRepository.findByChatIdAndUserId(chatId,userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado no chat."));;
 
         chatUserRepository.delete(chatUser);
@@ -38,5 +38,6 @@ public class ChatUserService {
             }
 
         }
+
     }
 }
