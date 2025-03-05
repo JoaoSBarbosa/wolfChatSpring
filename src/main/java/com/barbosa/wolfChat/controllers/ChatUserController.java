@@ -1,6 +1,6 @@
 package com.barbosa.wolfChat.controllers;
 
-import com.barbosa.wolfChat.services.ChatUserService;
+import com.barbosa.wolfChat.api.chatUser.services.ChatUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
