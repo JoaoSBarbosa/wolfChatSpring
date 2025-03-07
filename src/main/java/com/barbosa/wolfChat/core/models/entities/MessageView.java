@@ -10,6 +10,7 @@ public class MessageView {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long messageViewId;
 
     @Column(name = "id_mensagem")
