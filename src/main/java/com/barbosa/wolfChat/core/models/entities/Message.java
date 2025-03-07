@@ -50,12 +50,5 @@ public class Message implements Serializable {
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MessageView> viewedBy = new HashSet<>();
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "tb_mensagem_visualizacao",
-//            joinColumns = @JoinColumn(name = "mv_mensagem_id"),
-//            inverseJoinColumns = @JoinColumn(name = "mv_usuario_id")
-//    )
-//    private Set<User> viewedBy = new HashSet<>();
 
 }
