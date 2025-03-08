@@ -1,13 +1,14 @@
 package com.barbosa.wolfChat.api.user.dtos;
 import com.barbosa.wolfChat.core.models.entities.User;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class UserInsertCrudDTO extends UserCrudDTO {
 
     private String password;
@@ -22,6 +23,7 @@ public class UserInsertCrudDTO extends UserCrudDTO {
     @Email(message = "O e-mail é obrigatorio")
     private String email;
 
+    public UserInsertCrudDTO() {}
     public UserInsertCrudDTO(String password, String imageUri) {
         this.password = password;
         this.imageUri = imageUri;

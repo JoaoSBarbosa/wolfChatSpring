@@ -19,7 +19,9 @@ import java.util.Set;
 @Table(name = "tb_mensagem")
 public class Message implements Serializable {
 
-    @Id
+    private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long msgId;

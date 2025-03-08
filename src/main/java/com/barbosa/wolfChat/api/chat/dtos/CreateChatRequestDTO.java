@@ -1,13 +1,12 @@
-package com.barbosa.wolfChat.dto.chat;
-
-import lombok.Data;
+package com.barbosa.wolfChat.api.chat.dtos;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import lombok.Data;
 
 @Data
 public class CreateChatRequestDTO implements Serializable {

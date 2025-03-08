@@ -1,24 +1,26 @@
 package com.barbosa.wolfChat.core.models.entities;
-
 import com.barbosa.wolfChat.core.models.base.Auditable;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.EqualsAndHashCode;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Table(name = "tb_chat")
 public class Chat extends Auditable implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "id")
+    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   
     private Long chatId;
 
     @Column(name = "eh_grupo")
@@ -40,7 +42,7 @@ public class Chat extends Auditable implements Serializable {
 
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JsonManagedReference // Evita loops de serialização
+    @JsonManagedReference
     private List<ChatUser> chatUsers = new ArrayList<>();
 
 

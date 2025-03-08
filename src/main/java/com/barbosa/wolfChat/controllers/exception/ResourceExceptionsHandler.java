@@ -1,14 +1,16 @@
 package com.barbosa.wolfChat.controllers.exception;
 
-import com.barbosa.wolfChat.services.exception.ServiceNotFoudEntityException;
-import com.barbosa.wolfChat.utils.model.StandardError;
-import jakarta.servlet.http.HttpServletRequest;
+import java.time.Instant;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.time.Instant;
+import com.barbosa.wolfChat.core.services.exception.ServiceNotFoudEntityException;
+import com.barbosa.wolfChat.utils.model.StandardError;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class ResourceExceptionsHandler {

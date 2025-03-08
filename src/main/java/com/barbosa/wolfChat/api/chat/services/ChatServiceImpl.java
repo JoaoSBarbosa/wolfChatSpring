@@ -1,18 +1,11 @@
 package com.barbosa.wolfChat.api.chat.services;
 
-import com.barbosa.wolfChat.api.chat.dtos.ChatDTO;
-import com.barbosa.wolfChat.core.models.entities.*;
-import com.barbosa.wolfChat.dto.chat.ChatUserDTO;
-import com.barbosa.wolfChat.dto.chat.CreateChatDTO;
-import com.barbosa.wolfChat.repositories.ChatRepository;
-import com.barbosa.wolfChat.repositories.ChatUserRepository;
-import com.barbosa.wolfChat.repositories.MessageRepository;
-import com.barbosa.wolfChat.repositories.UserRepository;
-import com.barbosa.wolfChat.services.exception.ServiceNotFoudEntityException;
-import com.barbosa.wolfChat.utils.CommonUtil.CommunUtils;
-import com.barbosa.wolfChat.utils.model.ResponseUtil;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,30 +13,46 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.barbosa.wolfChat.api.chat.dtos.ChatDTO;
+import com.barbosa.wolfChat.api.chat.dtos.CreateChatDTO;
+import com.barbosa.wolfChat.api.chatUser.dtos.ChatUserDTO;
+import com.barbosa.wolfChat.core.models.entities.Chat;
+import com.barbosa.wolfChat.core.models.entities.ChatUser;
+import com.barbosa.wolfChat.core.models.entities.Message;
+import com.barbosa.wolfChat.core.models.entities.MessageView;
+import com.barbosa.wolfChat.core.models.entities.User;
+import com.barbosa.wolfChat.core.services.exception.ServiceNotFoudEntityException;
+import com.barbosa.wolfChat.repositories.ChatRepository;
+import com.barbosa.wolfChat.repositories.ChatUserRepository;
+import com.barbosa.wolfChat.repositories.MessageRepository;
+import com.barbosa.wolfChat.repositories.UserRepository;
+import com.barbosa.wolfChat.utils.CommonUtil.CommunUtils;
+import com.barbosa.wolfChat.utils.model.ResponseUtil;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ChatServiceImpl implements ChatService {
 
-    @Autowired ChatUserRepository chatUserRepository;
-    @Autowired MessageRepository messageRepository;
-    @Autowired private ChatRepository chatRepository;
-    @Autowired private UserRepository userRepository;
-
+    @Autowired
+    ChatUserRepository chatUserRepository;
+    @Autowired
+    MessageRepository messageRepository;
+    @Autowired
+    private ChatRepository chatRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
     public ResponseUtil creatingChat(CreateChatDTO dto) {
 
-        System.out.println("VALOR DE IS GROUP: "+ dto.getIsGroup());
+        System.out.println("VALOR DE IS GROUP: " + dto.getIsGroup());
         if (Boolean.FALSE.equals(dto.getIsGroup())) {
             System.out.println("CAIU NO NÃO É GRUPO");
         }
 
-        User creator = userRepository.findById(dto.getAdminId()).orElseThrow(() -> new EntityNotFoundException("Usuario criador não encontrado"));
+        User creator = userRepository.findById(dto.getAdminId())
+                .orElseThrow(() -> new EntityNotFoundException("Usuario criador não encontrado"));
 
         if (Boolean.FALSE.equals(dto.getIsGroup()) && dto.getUserIds().size() > 2) {
             return ResponseUtil.builder()
@@ -55,8 +64,10 @@ public class ChatServiceImpl implements ChatService {
         }
 
         Chat chat = new Chat();
-        if (dto.getChatName() != null && dto.getIsGroup()) chat.setChatName(dto.getChatName());
-        if (dto.getDescription() != null && dto.getIsGroup()) chat.setDescription(dto.getDescription());
+        if (dto.getChatName() != null && dto.getIsGroup())
+            chat.setChatName(dto.getChatName());
+        if (dto.getDescription() != null && dto.getIsGroup())
+            chat.setDescription(dto.getDescription());
         chat.setIsGroup(dto.getIsGroup());
         chat.setCreatedBy(creator.getUserId());
         chat.setCreatedAt(LocalDateTime.now());
@@ -64,12 +75,13 @@ public class ChatServiceImpl implements ChatService {
         chat = chatRepository.saveAndFlush(chat);
 
         List<ChatUser> chatUsers = new ArrayList<>();
-//        // Adicionando usuários ao chat
+        // // Adicionando usuários ao chat
         for (Long participantId : dto.getUserIds()) {
-            User participant = userRepository.findById(participantId).orElseThrow(() -> new ServiceNotFoudEntityException("Usuário não encontrado: " + participantId));
+            User participant = userRepository.findById(participantId)
+                    .orElseThrow(() -> new ServiceNotFoudEntityException("Usuário não encontrado: " + participantId));
 
             ChatUser chatUser = new ChatUser();
-            chatUser.setChatId( chat.getChatId() );
+            chatUser.setChatId(chat.getChatId());
             chatUser.setUserId(participant.getUserId());
             chatUser.setIsAdmin(dto.getIsGroup() && participant.equals(dto.getAdminId()));
             chatUser.setJoinedAt(LocalDateTime.now());
@@ -87,7 +99,6 @@ public class ChatServiceImpl implements ChatService {
                 .data(chat)
                 .build();
     }
-
 
     @Transactional(readOnly = true)
     public Page<ChatDTO> getChats(Pageable pageable) {
@@ -116,8 +127,6 @@ public class ChatServiceImpl implements ChatService {
             return chatDTO;
         });
     }
-
-
 
     @Transactional
     public void addUserToGroup(Long chatId, Long adminId, Long userId) {
@@ -154,7 +163,6 @@ public class ChatServiceImpl implements ChatService {
 
         chatUserRepository.save(chatUser);
     }
-
 
     @Transactional
     public void promoteUserToAdmin(Long chatId, Long adminId, Long userId) {

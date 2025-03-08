@@ -1,6 +1,6 @@
 package com.barbosa.wolfChat.api.chat.controllers;
 import com.barbosa.wolfChat.api.chat.dtos.ChatDTO;
-import com.barbosa.wolfChat.dto.chat.CreateChatDTO;
+import com.barbosa.wolfChat.api.chat.dtos.CreateChatDTO;
 import com.barbosa.wolfChat.api.chat.services.ChatServiceImpl;
 import com.barbosa.wolfChat.utils.model.ResponseUtil;
 import jakarta.validation.Valid;

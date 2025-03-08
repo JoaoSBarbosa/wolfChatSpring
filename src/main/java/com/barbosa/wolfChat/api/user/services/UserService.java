@@ -1,13 +1,5 @@
 package com.barbosa.wolfChat.api.user.services;
 
-import com.barbosa.wolfChat.api.user.dtos.UserCrudDTO;
-import com.barbosa.wolfChat.api.user.dtos.UserInsertCrudDTO;
-import com.barbosa.wolfChat.core.models.entities.User;
-import com.barbosa.wolfChat.repositories.ChatUserRepository;
-import com.barbosa.wolfChat.repositories.UserRepository;
-import com.barbosa.wolfChat.utils.CommonUtil.CommunUtils;
-import com.barbosa.wolfChat.utils.model.ResponseUtil;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +8,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import com.barbosa.wolfChat.api.user.dtos.UserCrudDTO;
+import com.barbosa.wolfChat.api.user.dtos.UserInsertCrudDTO;
+import com.barbosa.wolfChat.core.models.entities.User;
+import com.barbosa.wolfChat.repositories.ChatUserRepository;
+import com.barbosa.wolfChat.repositories.UserRepository;
+import com.barbosa.wolfChat.utils.CommonUtil.CommunUtils;
+import com.barbosa.wolfChat.utils.model.ResponseUtil;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {

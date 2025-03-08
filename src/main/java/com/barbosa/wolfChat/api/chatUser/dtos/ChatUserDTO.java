@@ -1,4 +1,4 @@
-package com.barbosa.wolfChat.dto.chat;
+package com.barbosa.wolfChat.api.chatUser.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

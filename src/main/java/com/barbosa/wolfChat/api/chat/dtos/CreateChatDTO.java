@@ -1,4 +1,4 @@
-package com.barbosa.wolfChat.dto.chat;
+package com.barbosa.wolfChat.api.chat.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

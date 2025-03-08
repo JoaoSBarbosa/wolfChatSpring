@@ -1,4 +1,4 @@
-package com.barbosa.wolfChat.dto.message;
+package com.barbosa.wolfChat.api.message.dtos;
 
 import com.barbosa.wolfChat.api.user.dtos.UserMessageDTO;
 import lombok.Data;
