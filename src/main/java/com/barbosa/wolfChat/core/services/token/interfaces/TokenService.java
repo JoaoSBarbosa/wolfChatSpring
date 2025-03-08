@@ -1,4 +1,4 @@
-package com.barbosa.wolfChat.core.services.token;
+package com.barbosa.wolfChat.core.services.token.interfaces;
 
 import com.barbosa.wolfChat.core.models.security.UserDetailsImpl;
 

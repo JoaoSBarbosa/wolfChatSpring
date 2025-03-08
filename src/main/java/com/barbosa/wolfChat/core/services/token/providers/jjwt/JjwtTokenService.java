@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.barbosa.wolfChat.core.models.security.UserDetailsImpl;
-import com.barbosa.wolfChat.core.services.token.TokenService;
+import com.barbosa.wolfChat.core.services.token.interfaces.TokenService;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
