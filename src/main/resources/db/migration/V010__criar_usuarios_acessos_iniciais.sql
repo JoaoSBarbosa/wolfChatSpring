@@ -1,0 +1,1 @@
+INSERT INTO tb_usuario_acessos(id_usuario, id_acesso) VALUES (1,5);
