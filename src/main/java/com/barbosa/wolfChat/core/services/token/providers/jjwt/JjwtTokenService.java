@@ -64,6 +64,12 @@ public class JjwtTokenService implements TokenService{
 		claims.put("roles", user.getAuthorities()
 				.stream()
 				.map(GrantedAuthority::getAuthority).toList());
+
+
+		claims.put("firstName", user.getUser().getFirstName());
+		claims.put("lastName", user.getUser().getLastName());
+		claims.put("urlImage", user.getUser().getImageUri());
+		claims.put("dropboxImg",user.getUser().getLinkDropboxImage());
 		return claims;
 		
 	}

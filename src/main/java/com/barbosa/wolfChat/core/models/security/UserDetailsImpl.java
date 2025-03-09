@@ -1,5 +1,9 @@
 package com.barbosa.wolfChat.core.models.security;
+
+import com.barbosa.wolfChat.api.user.dtos.UserClaims;
+import com.barbosa.wolfChat.api.user.mappers.UserMappers;
 import com.barbosa.wolfChat.core.models.entities.User;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,11 +13,11 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@Getter
 @RequiredArgsConstructor
-public class UserDetailsImpl implements UserDetails, Serializable{
+public class UserDetailsImpl implements UserDetails {
 
-    private static final long serialVersionUID = 1L;
-	private User user;
+    private final User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -24,6 +28,7 @@ public class UserDetailsImpl implements UserDetails, Serializable{
     public String getPassword() {
         return user.getPassword();
     }
+
 
     @Override
     public String getUsername() {

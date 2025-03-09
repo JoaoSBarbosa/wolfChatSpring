@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "com.barbosa.wolfchat.core.services.token")
+@ConfigurationProperties(prefix = "com.barbosa.wolfchat.core.services.token.jjwt")
 public class JjwtConfigProperties {
 
     private String accessTokenSigningKey;

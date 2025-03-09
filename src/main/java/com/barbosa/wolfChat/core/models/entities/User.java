@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import com.barbosa.wolfChat.core.models.base.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.Column;
@@ -28,9 +29,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "tb_usuario")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class User  extends Auditable implements Serializable{
+public class User extends Auditable {
 
-    private static final long serialVersionUID = 1L;
 
 	@Id
     @EqualsAndHashCode.Include
