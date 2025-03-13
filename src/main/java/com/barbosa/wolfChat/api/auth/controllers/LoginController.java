@@ -4,7 +4,6 @@ package com.barbosa.wolfChat.api.auth.controllers;
 import com.barbosa.wolfChat.api.auth.dtos.LoginRequest;
 import com.barbosa.wolfChat.api.auth.dtos.LoginResponse;
 import com.barbosa.wolfChat.api.auth.services.LoginService;
-import com.barbosa.wolfChat.api.user.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

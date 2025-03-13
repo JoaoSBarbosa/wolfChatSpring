@@ -50,11 +50,11 @@ public class JjwtTokenService implements TokenService{
 		var expirationDate = today.plusSeconds(expirationInSeconds);
 		
 		return Jwts.builder()
-				.setExpiration(Date.from(expirationDate))
+				.setClaims(createClaimsAuth(user))                    // Primeiro vem claims (adiciona "roles", "firstName" etc)
+				.setSubject(user.getUsername())                      // Agora seta o subject
 				.setIssuedAt(Date.from(today))
-				.setSubject(user.getUsername())
+				.setExpiration(Date.from(expirationDate))
 				.signWith(Keys.hmacShaKeyFor(signingKey.getBytes()))
-				.setClaims(createClaimsAuth(user))
 				.compact();
 		
 	}
