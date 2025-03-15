@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.barbosa.wolfChat.api.chat.dtos.CreateChatWithMessageDTO;
+import com.barbosa.wolfChat.api.chat.mappers.ChatMappers;
+import com.barbosa.wolfChat.api.message.dtos.MessageForChatCreationDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,17 +35,17 @@ import com.barbosa.wolfChat.utils.model.ResponseUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import static com.barbosa.wolfChat.api.chat.utils.ChatUtil.validateChatCreation;
+
 @Service
+@RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
 
-    @Autowired
-    ChatUserRepository chatUserRepository;
-    @Autowired
-    MessageRepository messageRepository;
-    @Autowired
-    private ChatRepository chatRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private final ChatUserRepository chatUserRepository;
+    private final ChatMappers chatMappers;
+    private final MessageRepository messageRepository;
+    private final ChatRepository chatRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public ResponseUtil creatingChat(CreateChatDTO dto) {
@@ -100,20 +104,99 @@ public class ChatServiceImpl implements ChatService {
                 .build();
     }
 
+//    @Override
+//    public ChatDTO createChat(CreateChatWithMessageDTO dto) {
+//
+//        User creator = userRepository.findById(dto.getAdminId()).orElseThrow(() -> new EntityNotFoundException("Usuario criador não encontrado"));
+//        if (Boolean.FALSE.equals(dto.getIsGroup()) && dto.getUserIds().size() > 2)
+//            throw new IllegalArgumentException("O chat individual só pode ter dois participantes");
+//
+//        Chat chat = new Chat();
+//
+//        if (dto.getChatName() != null && dto.getIsGroup()) chat.setChatName(dto.getChatName());
+//        if (dto.getDescription() != null && dto.getIsGroup()) chat.setDescription(dto.getDescription());
+//
+//        chat.setIsGroup(dto.getIsGroup());
+//        chat.setCreatedBy(creator.getUserId());
+//        chat.setCreatedAt(LocalDateTime.now());
+//
+//        chat = chatRepository.saveAndFlush(chat);
+//
+//        List<ChatUser> chatUsers = new ArrayList<>();
+//        // // Adicionando usuários ao chat
+//        for (Long participantId : dto.getUserIds()) {
+//            User participant = userRepository.findById(participantId).orElseThrow(() -> new ServiceNotFoudEntityException("Usuário não encontrado: " + participantId));
+//            ChatUser chatUser = new ChatUser();
+//            chatUser.setChatId(chat.getChatId());
+//            chatUser.setUserId(participant.getUserId());
+//            chatUser.setIsAdmin(dto.getIsGroup() && participant.equals(dto.getAdminId()));
+//            chatUser.setJoinedAt(LocalDateTime.now());
+//            chatUsers.add(chatUser);
+//
+//        }
+//
+//        chatUserRepository.saveAll(chatUsers);
+//
+//        if (!dto.getMessages().isEmpty()) {
+//            List<Message> messages = new ArrayList<>();
+//            dto.getMessages().forEach(message -> {
+//                Message entity = new Message();
+//                entity.setChatId(chat.getChatId());
+//                entity.setSender(creator);
+//                entity.setTimestamp(LocalDateTime.now());
+//                entity.setContent(message.getContent());
+//
+//                messages.add(entity);
+//            });
+//
+//            messageRepository.saveAll(messages);
+//        }
+//
+//        return chatRepository.findById(chat.getChatId()).map(chatMappers::toChatDTO).orElseThrow(()-> new RuntimeException("Nãoe xiste chat com este id"));
+//    }
+
+
+    @Override
+    @Transactional
+    public ChatDTO createChat(CreateChatWithMessageDTO dto) {
+        User creator = getUserOrThrow(dto.getAdminId(), "Usuário criador não encontrado");
+
+        validateChatCreation(dto);
+
+        Chat chat = buildChat(dto, creator);
+
+        chat = chatRepository.saveAndFlush(chat);
+        final Long chatId = chat.getChatId();
+
+        List<ChatUser> chatUsers = buildChatUsers(dto, chatId);
+        chatUserRepository.saveAll(chatUsers);
+
+        if (!dto.getMessages().isEmpty()) {
+            List<Message> messages = buildMessages(dto.getMessages(), chatId, creator);
+            messageRepository.saveAll(messages);
+        }
+
+        return chatRepository.findById(chatId)
+                .map(chatMappers::toChatDTO)
+                .orElseThrow(() -> new RuntimeException("Não existe chat com este id"));
+    }
+
+
     @Transactional(readOnly = true)
     public Page<ChatDTO> getChats(Pageable pageable) {
         Page<Chat> chats = chatRepository.findAll(pageable);
 
         // Converte entidades para DTOs
         return chats.map(chat -> {
-            ChatDTO chatDTO = new ChatDTO();
-            chatDTO.setChatId(chat.getChatId());
-            chatDTO.setIsGroup(chat.getIsGroup());
-            chatDTO.setChatName(chat.getChatName());
-            chatDTO.setDescription(chat.getDescription());
-            chatDTO.setCreatedAt(chat.getCreatedAt());
-            chatDTO.setCreatedBy(chat.getCreatedBy());
+//            ChatDTO chatDTO = new ChatDTO();
+//            chatDTO.setChatId(chat.getChatId());
+//            chatDTO.setIsGroup(chat.getIsGroup());
+//            chatDTO.setChatName(chat.getChatName());
+//            chatDTO.setDescription(chat.getDescription());
+//            chatDTO.setCreatedAt(chat.getCreatedAt());
+//            chatDTO.setCreatedBy(chat.getCreatedBy());
 
+            ChatDTO chatDTO = chatMappers.toChatDTO(chat);
             // Mapeia ChatUsers para DTOs
             List<ChatUserDTO> chatUsers = chat.getChatUsers().stream().map(chatUser -> {
                 ChatUserDTO chatUserDTO = new ChatUserDTO();
@@ -232,5 +315,62 @@ public class ChatServiceImpl implements ChatService {
 
         message.getViewedBy().add(messageView);
         messageRepository.save(message);
+    }
+
+
+
+
+
+    private Chat buildChat(CreateChatWithMessageDTO dto, User creator){
+        Chat chat = new Chat();
+        chat.setIsGroup(dto.getIsGroup());
+        chat.setCreatedBy(creator.getUserId());
+        chat.setCreatedAt(LocalDateTime.now());
+
+        if (Boolean.TRUE.equals(dto.getIsGroup())) {
+            chat.setChatName(dto.getChatName());
+            chat.setDescription(dto.getDescription());
+        }
+        return chat;
+    }
+
+    private List<ChatUser> buildChatUsers(CreateChatWithMessageDTO dto, Long chatId) {
+        List<ChatUser> chatUsers = new ArrayList<>();
+
+        for (Long participantId : dto.getUserIds()) {
+            User participant = getUserOrThrow(participantId, "Usuário não encontrado: " + participantId);
+
+            ChatUser chatUser = new ChatUser();
+            chatUser.setChatId(chatId);
+            chatUser.setUserId(participant.getUserId());
+            chatUser.setIsAdmin(Boolean.TRUE.equals(dto.getIsGroup()) && participant.getUserId().equals(dto.getAdminId()));
+            chatUser.setJoinedAt(LocalDateTime.now());
+
+            chatUsers.add(chatUser);
+        }
+
+        return chatUsers;
+    }
+
+    private List<Message> buildMessages(List<MessageForChatCreationDTO> messageDTOs, Long chatId, User creator) {
+        List<Message> messages = new ArrayList<>();
+
+        for (MessageForChatCreationDTO dto : messageDTOs) {
+            Message entity = new Message();
+            entity.setChatId(chatId);
+            entity.setSender(creator);
+            entity.setTimestamp(dto.getTimestamp() != null ? dto.getTimestamp() : LocalDateTime.now());
+            entity.setContent(dto.getContent());
+
+            messages.add(entity);
+        }
+
+        return messages;
+    }
+
+
+    private User getUserOrThrow(Long userId, String errorMessage) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(errorMessage));
     }
 }

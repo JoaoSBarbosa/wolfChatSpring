@@ -1,6 +1,7 @@
 package com.barbosa.wolfChat.api.chat.controllers;
 import com.barbosa.wolfChat.api.chat.dtos.ChatDTO;
 import com.barbosa.wolfChat.api.chat.dtos.CreateChatDTO;
+import com.barbosa.wolfChat.api.chat.dtos.CreateChatWithMessageDTO;
 import com.barbosa.wolfChat.api.chat.services.ChatServiceImpl;
 import com.barbosa.wolfChat.utils.model.ResponseUtil;
 import jakarta.validation.Valid;
@@ -26,6 +27,12 @@ public class ChatController {
     public ResponseEntity<ResponseUtil> addChat(@Valid @RequestBody CreateChatDTO userId) {
         ResponseUtil responseUtil = chatServiceImpl.creatingChat(userId);
         return new ResponseEntity<>(responseUtil, responseUtil.getStatus());
+    }
+
+    @PostMapping("/with_message")
+    public ResponseEntity<ChatDTO> addChatWithMessage(@Valid @RequestBody CreateChatWithMessageDTO dto) {
+        ChatDTO chatDTO = chatServiceImpl.createChat(dto);
+        return ResponseEntity.ok().body(chatDTO);
     }
 
     @GetMapping

@@ -69,6 +69,7 @@ public class JjwtTokenService implements TokenService{
 		claims.put("firstName", user.getUser().getFirstName());
 		claims.put("lastName", user.getUser().getLastName());
 		claims.put("urlImage", user.getUser().getImageUri());
+		claims.put("id", user.getUser().getUserId());
 		claims.put("dropboxImg",user.getUser().getLinkDropboxImage());
 		return claims;
 		
