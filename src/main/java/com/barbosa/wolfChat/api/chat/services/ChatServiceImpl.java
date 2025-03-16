@@ -358,7 +358,7 @@ public class ChatServiceImpl implements ChatService {
         for (MessageForChatCreationDTO dto : messageDTOs) {
             Message entity = new Message();
             entity.setChatId(chatId);
-            entity.setSender(creator);
+            entity.setUserId(creator.getUserId());
             entity.setTimestamp(dto.getTimestamp() != null ? dto.getTimestamp() : LocalDateTime.now());
             entity.setContent(dto.getContent());
 
