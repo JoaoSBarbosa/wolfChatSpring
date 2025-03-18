@@ -25,11 +25,11 @@ public class ChatUser implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "chat_id", nullable = false)
-    private Long chatId;
+//    @Column(name = "chat_id", nullable = false)
+//    private Long chatId;
 
-    @Column(name = "usu_id",nullable = false)
-    private Long userId;
+//    @Column(name = "usu_id",nullable = false)
+//    private Long userId;
 
     @Column(name = "is_admin", nullable = false)
     private Boolean isAdmin = false;
@@ -40,12 +40,12 @@ public class ChatUser implements Serializable {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_chat", insertable = false, updatable = false)
+    @JoinColumn(name = "id_chat")
     @JsonBackReference // Evita loops de serialização
     private Chat chat;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", insertable = false, updatable = false)
+    @JoinColumn(name = "id_usuario")
     private User user;
 
 

@@ -85,8 +85,8 @@ public class ChatServiceImpl implements ChatService {
                     .orElseThrow(() -> new ServiceNotFoudEntityException("Usuário não encontrado: " + participantId));
 
             ChatUser chatUser = new ChatUser();
-            chatUser.setChatId(chat.getChatId());
-            chatUser.setUserId(participant.getUserId());
+            chatUser.setChat(chat);
+            chatUser.setUser(participant);
             chatUser.setIsAdmin(dto.getIsGroup() && participant.equals(dto.getAdminId()));
             chatUser.setJoinedAt(LocalDateTime.now());
             chatUsers.add(chatUser);
@@ -168,7 +168,7 @@ public class ChatServiceImpl implements ChatService {
         chat = chatRepository.saveAndFlush(chat);
         final Long chatId = chat.getChatId();
 
-        List<ChatUser> chatUsers = buildChatUsers(dto, chatId);
+        List<ChatUser> chatUsers = buildChatUsers(dto, chat);
         chatUserRepository.saveAll(chatUsers);
 
         if (!dto.getMessages().isEmpty()) {
@@ -188,19 +188,11 @@ public class ChatServiceImpl implements ChatService {
 
         // Converte entidades para DTOs
         return chats.map(chat -> {
-//            ChatDTO chatDTO = new ChatDTO();
-//            chatDTO.setChatId(chat.getChatId());
-//            chatDTO.setIsGroup(chat.getIsGroup());
-//            chatDTO.setChatName(chat.getChatName());
-//            chatDTO.setDescription(chat.getDescription());
-//            chatDTO.setCreatedAt(chat.getCreatedAt());
-//            chatDTO.setCreatedBy(chat.getCreatedBy());
-
             ChatDTO chatDTO = chatMappers.toChatDTO(chat);
             // Mapeia ChatUsers para DTOs
             List<ChatUserDTO> chatUsers = chat.getChatUsers().stream().map(chatUser -> {
                 ChatUserDTO chatUserDTO = new ChatUserDTO();
-                chatUserDTO.setUserId(chatUser.getUserId());
+                chatUserDTO.setUserId(chatUser.getUser().getUserId());
                 chatUserDTO.setIsAdmin(chatUser.getIsAdmin());
                 chatUserDTO.setJoinedAt(chatUser.getJoinedAt());
                 return chatUserDTO;
@@ -333,16 +325,15 @@ public class ChatServiceImpl implements ChatService {
         }
         return chat;
     }
-
-    private List<ChatUser> buildChatUsers(CreateChatWithMessageDTO dto, Long chatId) {
+    private List<ChatUser> buildChatUsers(CreateChatWithMessageDTO dto, Chat chat) {
         List<ChatUser> chatUsers = new ArrayList<>();
 
         for (Long participantId : dto.getUserIds()) {
             User participant = getUserOrThrow(participantId, "Usuário não encontrado: " + participantId);
 
             ChatUser chatUser = new ChatUser();
-            chatUser.setChatId(chatId);
-            chatUser.setUserId(participant.getUserId());
+            chatUser.setChat(chat);
+            chatUser.setUser(participant);
             chatUser.setIsAdmin(Boolean.TRUE.equals(dto.getIsGroup()) && participant.getUserId().equals(dto.getAdminId()));
             chatUser.setJoinedAt(LocalDateTime.now());
 
@@ -351,6 +342,23 @@ public class ChatServiceImpl implements ChatService {
 
         return chatUsers;
     }
+//    private List<ChatUser> buildChatUsers(CreateChatWithMessageDTO dto, Long chatId) {
+//        List<ChatUser> chatUsers = new ArrayList<>();
+//
+//        for (Long participantId : dto.getUserIds()) {
+//            User participant = getUserOrThrow(participantId, "Usuário não encontrado: " + participantId);
+//
+//            ChatUser chatUser = new ChatUser();
+//            chatUser.setChatId(chatId);
+//            chatUser.setUserId(participant.getUserId());
+//            chatUser.setIsAdmin(Boolean.TRUE.equals(dto.getIsGroup()) && participant.getUserId().equals(dto.getAdminId()));
+//            chatUser.setJoinedAt(LocalDateTime.now());
+//
+//            chatUsers.add(chatUser);
+//        }
+//
+//        return chatUsers;
+//    }
 
     private List<Message> buildMessages(List<MessageForChatCreationDTO> messageDTOs, Long chatId, User creator) {
         List<Message> messages = new ArrayList<>();
