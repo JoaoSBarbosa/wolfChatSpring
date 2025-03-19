@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import com.barbosa.wolfChat.api.chat.dtos.CreateChatWithMessageDTO;
+import com.barbosa.wolfChat.api.message.dtos.MessageDTO;
 import com.barbosa.wolfChat.api.message.dtos.MessageForChatCreationDTO;
 import com.barbosa.wolfChat.api.user.dtos.UserClaims;
 import lombok.RequiredArgsConstructor;
@@ -145,36 +146,8 @@ public class ChatServiceImpl implements ChatService {
     @Transactional(readOnly = true)
     public Page<ChatDTO> getChats(Pageable pageable) {
         Page<Chat> chats = chatRepository.findAll(pageable);
-        return chats.map(chat -> ChatDTO.builder()
-                .chatId(chat.getChatId())
-                .isGroup(chat.getIsGroup())
-                .chatName(chat.getChatName())
-                .description(chat.getDescription())
-                .createdAt(chat.getCreatedAt())
-                .createdBy(new UserClaims(chat.getCreatedBy()))
-                .chatUsers(chat.getChatUsers().stream()
-                        .map(chatUser -> ChatUserDTO.builder()
-                                .userId(chatUser.getUser().getUserId())
-                                .isAdmin(chatUser.getIsAdmin())
-                                .joinedAt(chatUser.getJoinedAt())
-                                .build())
-                        .collect(Collectors.toList()))
-                .build());
-//        // Converte entidades para DTOs
-//        return chats.map(chat -> {
-//            ChatDTO chatDTO = new ChatDTO(chat);
-//            // Mapeia ChatUsers para DTOs
-//            List<ChatUserDTO> chatUsers = chat.getChatUsers().stream().map(chatUser -> {
-//                ChatUserDTO chatUserDTO = new ChatUserDTO();
-//                chatUserDTO.setUserId(chatUser.getUser().getUserId());
-//                chatUserDTO.setIsAdmin(chatUser.getIsAdmin());
-//                chatUserDTO.setJoinedAt(chatUser.getJoinedAt());
-//                return chatUserDTO;
-//            }).collect(Collectors.toList());
-//
-//            chatDTO.setChatUsers(chatUsers);
-//            return chatDTO;
-//        });
+
+        return chats.map(ChatDTO::fromEntity);
     }
 
     @Transactional

@@ -1,10 +1,8 @@
 package com.barbosa.wolfChat.config;
 
-import com.barbosa.wolfChat.controllers.exception.TokenServiceExeption;
-import com.barbosa.wolfChat.core.models.security.UserDetailsImpl;
+import com.barbosa.wolfChat.api.common.exception.TokenServiceExeption;
 import com.barbosa.wolfChat.core.services.security.UserDetailsServiceImpl;
 import com.barbosa.wolfChat.core.services.token.interfaces.TokenService;
-import com.barbosa.wolfChat.utils.CommonUtil.CommunUtils;
 import com.barbosa.wolfChat.utils.model.StandardError;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;

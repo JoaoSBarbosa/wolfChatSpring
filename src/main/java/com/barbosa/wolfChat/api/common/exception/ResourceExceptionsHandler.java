@@ -1,4 +1,4 @@
-package com.barbosa.wolfChat.controllers.exception;
+package com.barbosa.wolfChat.api.common.exception;
 
 import java.time.Instant;
 

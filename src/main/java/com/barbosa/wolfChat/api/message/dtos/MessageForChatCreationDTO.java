@@ -1,6 +1,5 @@
 package com.barbosa.wolfChat.api.message.dtos;
 
-import com.barbosa.wolfChat.api.user.dtos.UserMessageDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

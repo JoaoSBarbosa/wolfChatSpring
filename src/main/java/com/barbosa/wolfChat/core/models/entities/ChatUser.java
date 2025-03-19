@@ -35,12 +35,12 @@ public class ChatUser implements Serializable {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_chat")
+    @JoinColumn(name = "chat_id")
     @JsonBackReference // Evita loops de serialização
     private Chat chat;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "usu_id")
     private User user;
 
 

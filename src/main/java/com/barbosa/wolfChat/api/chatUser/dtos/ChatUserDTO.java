@@ -19,11 +19,11 @@ public class ChatUserDTO {
     private LocalDateTime joinedAt;
 
     public ChatUserDTO(ChatUser chatUser) {
-        this.userId = chatUser.getId();
-        firstName = chatUser.getUser().getFirstName();
-        lastName = chatUser.getUser().getLastName();
-        isAdmin = chatUser.getIsAdmin();
-        joinedAt = chatUser.getJoinedAt();
+        this.userId = chatUser.getUser().getUserId(); // ⚠️ Antes estava chatUser.getId(), que parece errado
+        this.firstName = chatUser.getUser().getFirstName();
+        this.lastName = chatUser.getUser().getLastName();
+        this.isAdmin = chatUser.getIsAdmin();
+        this.joinedAt = chatUser.getJoinedAt();
     }
 
 }
