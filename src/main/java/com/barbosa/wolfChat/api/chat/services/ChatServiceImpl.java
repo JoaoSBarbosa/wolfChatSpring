@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import com.barbosa.wolfChat.api.chat.dtos.CreateChatWithMessageDTO;
-import com.barbosa.wolfChat.api.chat.mappers.ChatMappers;
 import com.barbosa.wolfChat.api.message.dtos.MessageForChatCreationDTO;
+import com.barbosa.wolfChat.api.user.dtos.UserClaims;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -42,7 +40,6 @@ import static com.barbosa.wolfChat.api.chat.utils.ChatUtil.validateChatCreation;
 public class ChatServiceImpl implements ChatService {
 
     private final ChatUserRepository chatUserRepository;
-    private final ChatMappers chatMappers;
     private final MessageRepository messageRepository;
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
@@ -73,7 +70,7 @@ public class ChatServiceImpl implements ChatService {
         if (dto.getDescription() != null && dto.getIsGroup())
             chat.setDescription(dto.getDescription());
         chat.setIsGroup(dto.getIsGroup());
-        chat.setCreatedBy(creator.getUserId());
+        chat.setCreatedBy(creator);
         chat.setCreatedAt(LocalDateTime.now());
 
         chat = chatRepository.saveAndFlush(chat);
@@ -104,56 +101,6 @@ public class ChatServiceImpl implements ChatService {
                 .build();
     }
 
-//    @Override
-//    public ChatDTO createChat(CreateChatWithMessageDTO dto) {
-//
-//        User creator = userRepository.findById(dto.getAdminId()).orElseThrow(() -> new EntityNotFoundException("Usuario criador não encontrado"));
-//        if (Boolean.FALSE.equals(dto.getIsGroup()) && dto.getUserIds().size() > 2)
-//            throw new IllegalArgumentException("O chat individual só pode ter dois participantes");
-//
-//        Chat chat = new Chat();
-//
-//        if (dto.getChatName() != null && dto.getIsGroup()) chat.setChatName(dto.getChatName());
-//        if (dto.getDescription() != null && dto.getIsGroup()) chat.setDescription(dto.getDescription());
-//
-//        chat.setIsGroup(dto.getIsGroup());
-//        chat.setCreatedBy(creator.getUserId());
-//        chat.setCreatedAt(LocalDateTime.now());
-//
-//        chat = chatRepository.saveAndFlush(chat);
-//
-//        List<ChatUser> chatUsers = new ArrayList<>();
-//        // // Adicionando usuários ao chat
-//        for (Long participantId : dto.getUserIds()) {
-//            User participant = userRepository.findById(participantId).orElseThrow(() -> new ServiceNotFoudEntityException("Usuário não encontrado: " + participantId));
-//            ChatUser chatUser = new ChatUser();
-//            chatUser.setChatId(chat.getChatId());
-//            chatUser.setUserId(participant.getUserId());
-//            chatUser.setIsAdmin(dto.getIsGroup() && participant.equals(dto.getAdminId()));
-//            chatUser.setJoinedAt(LocalDateTime.now());
-//            chatUsers.add(chatUser);
-//
-//        }
-//
-//        chatUserRepository.saveAll(chatUsers);
-//
-//        if (!dto.getMessages().isEmpty()) {
-//            List<Message> messages = new ArrayList<>();
-//            dto.getMessages().forEach(message -> {
-//                Message entity = new Message();
-//                entity.setChatId(chat.getChatId());
-//                entity.setSender(creator);
-//                entity.setTimestamp(LocalDateTime.now());
-//                entity.setContent(message.getContent());
-//
-//                messages.add(entity);
-//            });
-//
-//            messageRepository.saveAll(messages);
-//        }
-//
-//        return chatRepository.findById(chat.getChatId()).map(chatMappers::toChatDTO).orElseThrow(()-> new RuntimeException("Nãoe xiste chat com este id"));
-//    }
 
 
     @Override
@@ -176,31 +123,58 @@ public class ChatServiceImpl implements ChatService {
             messageRepository.saveAll(messages);
         }
 
-        return chatRepository.findById(chatId)
-                .map(chatMappers::toChatDTO)
+        // Buscar o chat atualizado já com os usuários para popular o DTO
+        Chat finalChat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new RuntimeException("Não existe chat com este id"));
+
+        // Retorna o DTO usando o Builder
+        return ChatDTO.builder()
+                .chatId(finalChat.getChatId())
+                .isGroup(finalChat.getIsGroup())
+                .chatName(finalChat.getChatName())
+                .description(finalChat.getDescription())
+                .createdAt(finalChat.getCreatedAt())
+                .createdBy(new UserClaims(finalChat.getCreatedBy()))
+                .chatUsers(finalChat.getChatUsers().stream()
+                        .map(ChatUserDTO::new)
+                        .collect(Collectors.toList()))
+                .build();
     }
 
 
     @Transactional(readOnly = true)
     public Page<ChatDTO> getChats(Pageable pageable) {
         Page<Chat> chats = chatRepository.findAll(pageable);
-
-        // Converte entidades para DTOs
-        return chats.map(chat -> {
-            ChatDTO chatDTO = chatMappers.toChatDTO(chat);
-            // Mapeia ChatUsers para DTOs
-            List<ChatUserDTO> chatUsers = chat.getChatUsers().stream().map(chatUser -> {
-                ChatUserDTO chatUserDTO = new ChatUserDTO();
-                chatUserDTO.setUserId(chatUser.getUser().getUserId());
-                chatUserDTO.setIsAdmin(chatUser.getIsAdmin());
-                chatUserDTO.setJoinedAt(chatUser.getJoinedAt());
-                return chatUserDTO;
-            }).collect(Collectors.toList());
-
-            chatDTO.setChatUsers(chatUsers);
-            return chatDTO;
-        });
+        return chats.map(chat -> ChatDTO.builder()
+                .chatId(chat.getChatId())
+                .isGroup(chat.getIsGroup())
+                .chatName(chat.getChatName())
+                .description(chat.getDescription())
+                .createdAt(chat.getCreatedAt())
+                .createdBy(new UserClaims(chat.getCreatedBy()))
+                .chatUsers(chat.getChatUsers().stream()
+                        .map(chatUser -> ChatUserDTO.builder()
+                                .userId(chatUser.getUser().getUserId())
+                                .isAdmin(chatUser.getIsAdmin())
+                                .joinedAt(chatUser.getJoinedAt())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build());
+//        // Converte entidades para DTOs
+//        return chats.map(chat -> {
+//            ChatDTO chatDTO = new ChatDTO(chat);
+//            // Mapeia ChatUsers para DTOs
+//            List<ChatUserDTO> chatUsers = chat.getChatUsers().stream().map(chatUser -> {
+//                ChatUserDTO chatUserDTO = new ChatUserDTO();
+//                chatUserDTO.setUserId(chatUser.getUser().getUserId());
+//                chatUserDTO.setIsAdmin(chatUser.getIsAdmin());
+//                chatUserDTO.setJoinedAt(chatUser.getJoinedAt());
+//                return chatUserDTO;
+//            }).collect(Collectors.toList());
+//
+//            chatDTO.setChatUsers(chatUsers);
+//            return chatDTO;
+//        });
     }
 
     @Transactional
@@ -316,7 +290,7 @@ public class ChatServiceImpl implements ChatService {
     private Chat buildChat(CreateChatWithMessageDTO dto, User creator){
         Chat chat = new Chat();
         chat.setIsGroup(dto.getIsGroup());
-        chat.setCreatedBy(creator.getUserId());
+        chat.setCreatedBy(creator);
         chat.setCreatedAt(LocalDateTime.now());
 
         if (Boolean.TRUE.equals(dto.getIsGroup())) {

@@ -20,7 +20,6 @@ public class Chat extends Auditable implements Serializable {
     @Column(name = "id")
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   
     private Long chatId;
 
     @Column(name = "eh_grupo")
@@ -31,14 +30,9 @@ public class Chat extends Auditable implements Serializable {
     @Column( name = "descricao")
     private String description;
 
-
-    @Column(name = "criado_por", nullable = false)
-    private Long createdBy;
-
-
     @ManyToOne
-    @JoinColumn(name = "criado_por", insertable = false, updatable = false, referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "criado_por", referencedColumnName = "id")
+    private User createdBy;
 
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

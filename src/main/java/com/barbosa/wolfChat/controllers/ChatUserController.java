@@ -14,9 +14,9 @@ public class ChatUserController {
     @Autowired
     ChatUserService chatUserService;
 
-    @DeleteMapping("/{chatId}/{userId}")
-    public ResponseEntity<String> removeUser(@PathVariable Long chatId, @PathVariable Long userId) {
-        chatUserService.removeUserFromChat(chatId, userId);
-        return ResponseEntity.ok("Usuário removido do chat.");
-    }
+//    @DeleteMapping("/{chatId}/{userId}")
+//    public ResponseEntity<String> removeUser(@PathVariable Long chatId, @PathVariable Long userId) {
+//        chatUserService.removeUserFromChat(chatId, userId);
+//        return ResponseEntity.ok("Usuário removido do chat.");
+//    }
 }

@@ -27,6 +27,6 @@ public class ChatUserMappersImpl implements ChatUserMappers {
     @Override
     public List<ChatUserDTO> toChatUserDTOList(List<ChatUser> chatUsers) {
         if(chatUsers == null) return Collections.emptyList();
-        return chatUsers.stream().map(this::toChatUserDTO).collect( Collectors.toList());
+        return chatUsers.stream().map(ChatUserDTO::new).collect( Collectors.toList());
     }
 }

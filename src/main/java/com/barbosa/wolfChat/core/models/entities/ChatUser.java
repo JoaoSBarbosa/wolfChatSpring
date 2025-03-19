@@ -25,11 +25,6 @@ public class ChatUser implements Serializable {
     @Column(name = "id")
     private Long id;
 
-//    @Column(name = "chat_id", nullable = false)
-//    private Long chatId;
-
-//    @Column(name = "usu_id",nullable = false)
-//    private Long userId;
 
     @Column(name = "is_admin", nullable = false)
     private Boolean isAdmin = false;

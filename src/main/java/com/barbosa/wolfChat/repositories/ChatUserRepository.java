@@ -12,7 +12,10 @@ import java.util.Optional;
 @Repository
 public interface ChatUserRepository extends JpaRepository<ChatUser, Long> {
 
-    Optional<ChatUser> findByChatIdAndUserId(Long chatiD, Long chatId);
+    @Query("SELECT cu FROM ChatUser cu WHERE cu.chat.chatId = :chatId AND cu.user.userId = :userId")
+    Optional<ChatUser> findByChatIdAndUserId(@Param("chatId") Long chatId, @Param("userId") Long userId);
+
+//    Optional<ChatUser> findByChatIdAndUserId(Long chatiD, Long chatId);
 
 
     @Query("SELECT ctu FROM ChatUser ctu WHERE ctu.chat.chatId = :chatId ORDER BY ctu.joinedAt ASC")
@@ -22,6 +25,6 @@ public interface ChatUserRepository extends JpaRepository<ChatUser, Long> {
     @Query("SELECT ctu FROM ChatUser ctu WHERE ctu.chat.chatId = :chatId ORDER BY ctu.joinedAt ASC")
     Optional<ChatUser> findOldMemberByChatId(Long chatId);
 
-    Long countByChatId(Long chatId);
+//    Long countByChatId(Long chatId);
 
 }
