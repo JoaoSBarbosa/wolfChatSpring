@@ -1,6 +1,7 @@
 package com.barbosa.wolfChat.api.chatUser.dtos;
 
 import com.barbosa.wolfChat.core.models.entities.ChatUser;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,8 @@ public class ChatUserDTO {
     private String lastName;
     private Boolean isAdmin;
     private LocalDateTime joinedAt;
+    private String imageUri;
+    private String linkDropboxImage;
 
     public ChatUserDTO(ChatUser chatUser) {
         this.userId = chatUser.getUser().getUserId(); // ⚠️ Antes estava chatUser.getId(), que parece errado
@@ -24,6 +27,8 @@ public class ChatUserDTO {
         this.lastName = chatUser.getUser().getLastName();
         this.isAdmin = chatUser.getIsAdmin();
         this.joinedAt = chatUser.getJoinedAt();
+        imageUri = chatUser.getUser().getImageUri();
+        linkDropboxImage = chatUser.getUser().getLinkDropboxImage();
     }
 
 }
