@@ -23,6 +23,11 @@ public class ChatController {
     }
 
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ChatDTO> findChatById(@PathVariable Long id) {
+        ChatDTO chatDTO = chatServiceImpl.findChatById(id);
+        return ResponseEntity.ok(chatDTO);
+    }
     @PostMapping
     public ResponseEntity<ResponseUtil> addChat(@Valid @RequestBody CreateChatDTO userId) {
         ResponseUtil responseUtil = chatServiceImpl.creatingChat(userId);
