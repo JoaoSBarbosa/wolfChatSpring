@@ -11,6 +11,7 @@ public interface ChatService {
     ResponseUtil creatingChat(CreateChatDTO dto);
     ChatDTO createChat(CreateChatWithMessageDTO dto);
 
+    ChatDTO findChatById(Long id);
     Page<ChatDTO> getChats(Pageable pageable);
     void addUserToGroup(Long chatId, Long adminId, Long userId);
     void promoteUserToAdmin(Long chatId, Long adminId ,Long userId);

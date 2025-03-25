@@ -142,6 +142,12 @@ public class ChatServiceImpl implements ChatService {
                 .build();
     }
 
+    @Override
+    public ChatDTO findChatById(Long id) {
+        if(id == null) throw new IllegalArgumentException("O ID do chat esta vazio");
+        return chatRepository.findById(id).map(ChatDTO::fromEntity).orElseThrow(()-> new RuntimeException("Não localizado chat com o id informado: "+id));
+    }
+
 
     @Transactional(readOnly = true)
     public Page<ChatDTO> getChats(Pageable pageable) {
@@ -289,23 +295,7 @@ public class ChatServiceImpl implements ChatService {
 
         return chatUsers;
     }
-//    private List<ChatUser> buildChatUsers(CreateChatWithMessageDTO dto, Long chatId) {
-//        List<ChatUser> chatUsers = new ArrayList<>();
-//
-//        for (Long participantId : dto.getUserIds()) {
-//            User participant = getUserOrThrow(participantId, "Usuário não encontrado: " + participantId);
-//
-//            ChatUser chatUser = new ChatUser();
-//            chatUser.setChatId(chatId);
-//            chatUser.setUserId(participant.getUserId());
-//            chatUser.setIsAdmin(Boolean.TRUE.equals(dto.getIsGroup()) && participant.getUserId().equals(dto.getAdminId()));
-//            chatUser.setJoinedAt(LocalDateTime.now());
-//
-//            chatUsers.add(chatUser);
-//        }
-//
-//        return chatUsers;
-//    }
+
 
     private List<Message> buildMessages(List<MessageForChatCreationDTO> messageDTOs, Long chatId, User creator) {
         List<Message> messages = new ArrayList<>();
